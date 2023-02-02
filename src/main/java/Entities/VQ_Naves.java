@@ -7,6 +7,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "VQ_Naves")
+@NamedQueries({
+        @NamedQuery(name = "listaNaves", query = "from VQ_Naves n"),
+        @NamedQuery(name = "listarVacas", query = "from VQ_Ganado"),
+        @NamedQuery(name = "listaHijas", query = "from VQ_Ganado a where a.id_madre.id=:ID")
+})
 public class VQ_Naves implements Serializable {
     //Atributos
     @Id
@@ -17,6 +22,7 @@ public class VQ_Naves implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID")
     private List<VQ_Ganado> listaVQGanados;
+
     @Column(name = "ganadero")
     private String ganadero;
     @Column(name = "ubicacion")
