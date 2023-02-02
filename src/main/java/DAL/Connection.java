@@ -50,7 +50,12 @@ public class Connection {
 
     }
 
-    public void cerrarSesion() {
+   /**
+    * Descripcion: Método que se encarga de cerrar la sesion del objeto sessionFactory y cerrar la transaccion
+    * Precondiciones: Ninguna
+    * Postcondiciones: Ninguna
+    */
+   public void cerrarSesion() {
         try {
             transaction.commit();
             System.out.println("Peticion gestionada correctamente");
