@@ -70,6 +70,15 @@ public class DAL {
         try{
             List lista = conexion.session.getNamedQuery(ruta).getResultList();
 
+            for (int i = 0; i < lista.size(); i++) {
+                System.out.println(lista.get(i).toString());
+            }
+        }catch(Exception e){
+            throw e;
+        }
+
+
+    }
 
     public static Object mostrarPorId(String ruta, String parametro, int valor) {
 

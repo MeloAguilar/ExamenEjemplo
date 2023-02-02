@@ -9,6 +9,19 @@ import java.util.List;
 
 @Entity
 @Table(name = "VQ_Ganado")
+@NamedQueries({
+        @NamedQuery(name = "ListaVacas", query = "from VQ_Ganado a"),
+        @NamedQuery(name = "TraerVaca", query = "from VQ_Ganado a where a.ID=:ID"),
+        @NamedQuery(name = "ListarVacas", query = "from VQ_Ganado"),
+        @NamedQuery(name = "MostrarVacasPorLugar", query = "from VQ_Ganado a where a.nave.ubicacion=:ubicacion"),
+        @NamedQuery(name = "ListaHijas", query = "from VQ_Ganado a where a.id_madre.id=:ID"),
+        @NamedQuery(name= "VacasDeAñoDeProduccion", query = "Select a.id, a.id_madre, a.hijas, a.fechaEntrada,a.fechaSacrificio, b.year_produccion from VQ_Ganado as a inner join VQ_Produccion as b on a.id=b.idVaca where b.year_produccion=:year"),
+        @NamedQuery(name = "VacasDeNave", query = "from VQ_Ganado a where a.nave.id=:idnave"),
+        @NamedQuery(name = "TotalVacasPorGanaderos", query = "select count (a)from VQ_Ganado a where a.nave.ganadero=:ganadero"),
+        @NamedQuery(name = "VacasSinMadre", query = "from VQ_Ganado as a where a.id_madre is null"),
+        @NamedQuery(name = "ContarVacasSinMadre", query = "select count(a) from VQ_Ganado as a where a.id_madre is null")
+
+})
 // insert into VQ_Ganado (ID, fechaEntrada, fechaSacrificio, nombre, idNave, id_madre) values (1, '2015-02-13', '2021-02-13', 'Orly', 2, null);
 public class VQ_Ganado implements Serializable {
 
@@ -109,6 +122,8 @@ public class VQ_Ganado implements Serializable {
         this.listaProducciones = listaProducciones;
 
     }
+
+
 
     public VQ_Ganado(String fechaEntrada, String fechaSacrificio, String nombre, int idnave, int idmadre, List<VQ_Produccion> listaProducciones) {
         this.fechaEntrada = fechaEntrada;
