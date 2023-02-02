@@ -1,0 +1,32 @@
+CREATE TABLE `VQ_produccion` (
+  `year_produccion` int(11) NOT NULL,
+  `mes_produccion` int(11) NOT NULL,
+  `idVaca` int(11) NOT NULL,
+  `litros` int(11) DEFAULT NULL,
+  `id_produccion` int(11) DEFAULT NULL,
+  PRIMARY KEY (`year_produccion`,`mes_produccion`,`idVaca`),
+  KEY `FKsf7velg1c4awbq3ywgd99iloe` (`id_produccion`),
+  CONSTRAINT `FKsf7velg1c4awbq3ywgd99iloe` FOREIGN KEY (`id_produccion`) REFERENCES `VQ_Ganado` (`ID`)
+) ENGINE=InnoDB
+
+CREATE TABLE `VQ_Naves` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ganadero` varchar(255) DEFAULT NULL,
+  `ubicacion` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB
+
+
+CREATE TABLE `VQ_Ganado` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `fechaEntrada` varchar(255) DEFAULT NULL,
+  `fechaSacrificio` varchar(255) DEFAULT NULL,
+  `id_madre` int(11) DEFAULT NULL,
+  `id_nave` int(11) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK2jvphw07891p09051b64d6l9g` (`id_madre`),
+  KEY `FKocxx5vjuv00eb460yfq5ptcfk` (`id_nave`),
+  CONSTRAINT `FK2jvphw07891p09051b64d6l9g` FOREIGN KEY (`id_madre`) REFERENCES `VQ_Ganado` (`ID`),
+  CONSTRAINT `FKocxx5vjuv00eb460yfq5ptcfk` FOREIGN KEY (`id_nave`) REFERENCES `VQ_Naves` (`id`)
+) ENGINE=InnoDB
