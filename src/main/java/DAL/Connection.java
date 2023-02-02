@@ -11,9 +11,14 @@ import org.hibernate.query.Query;
 public class Connection {
 
     private static SessionFactory sessionFactory;
-    protected static Session session;
-    private static Transaction transaction;
+    protected Session session;
+    private Transaction transaction;
 
+
+    /**
+     *
+     * @throws Exception
+     */
     protected static void setUp() throws Exception {
 
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -27,6 +32,14 @@ public class Connection {
         }
     }
 
+    /**
+     * Descripcion: Método que se encarga de abrir la sesion del objeto sessionFactory
+     * e iniciar la transaccion para realizar el manejo de la base de datos
+     * mediante hibernate.
+     *
+     * Precondiciones: ninguna
+     * Postcondiciones: ninguna
+     */
     public void abrirSesion(){
         try {
             setUp();
@@ -44,27 +57,12 @@ public class Connection {
             System.out.println("Peticion gestionada correctamente");
         } catch (Exception e) {
             System.err.println("ERROR: No se ha podido realizar el commit, por ello ser procede a un rollback");
+
             transaction.rollback();
+            throw e;
         }
         sessionFactory.close();
     }
 
-    public Object guardar(Object objeto){
 
-        return session.save(objeto);
-    }
-
-    public void borrar(Object objeto){
-        session.remove(objeto);
-    }
-
-    public void saveFromFile(String queryStr) {
-    try{
-    abrirSesion();
-    Query query = session.createQuery(queryStr);
-    query.executeUpdate();
-    }catch(Exception e) {
-    throw e;
-    }
-    }
 }

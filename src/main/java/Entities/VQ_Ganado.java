@@ -1,7 +1,10 @@
 package Entities;
 
+import jdk.jfr.Name;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,7 +15,7 @@ public class VQ_Ganado implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int idVaca;
+    private int ID;
 
     @Column(name = "fechaEntrada")
     private String fechaEntrada;
@@ -24,50 +27,134 @@ public class VQ_Ganado implements Serializable {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "idNave")
-    private VQ_Naves VQNaves;
+    @JoinColumn(name = "id_madre", referencedColumnName = "ID")
+    private VQ_Ganado id_madre;
+
+
+    @OneToMany(mappedBy = "id_madre")
+    private List<VQ_Ganado> hijas;
+
+    @ManyToOne
+    @JoinColumn(name = "id_nave")
+    //Column(name="id_nave")
+    private VQ_Naves nave;
+
+    @OneToMany//(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_produccion")
+    private List<VQ_Produccion> listaProducciones;
+
+    public List<VQ_Ganado> getHijas() {
+        return hijas;
+    }
+
+    public void setHijas(List<VQ_Ganado> hijas) {
+        this.hijas = hijas;
+    }
+
+    public VQ_Naves getNave() {
+        return nave;
+    }
+
+    public void setNave(VQ_Naves nave) {
+        this.nave = nave;
+    }
+
+    public List<VQ_Produccion> getListaProducciones() {
+        return listaProducciones;
+    }
+
+    public void setListaProducciones(List<VQ_Produccion> listaProducciones) {
+        this.listaProducciones = listaProducciones;
+    }
+
+    public VQ_Ganado getId_madre() {
+        return id_madre;
+    }
+
+    public void setId_madre(VQ_Ganado id_madre) {
+        this.id_madre = id_madre;
+    }
+
+/*
+
 
     @ManyToOne
     @JoinColumn(name = "idVaca")
     private VQ_Ganado madre;
 
-    @OneToMany//(cascade = CascadeType.ALL)
-    @Column(name = "idVaca")
-    private List<VQ_Produccion> listaProducciones;
 
     @OneToMany//(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_madre")
     private List<VQ_Ganado> listaVacasHijas;
-
+*/
 
     public VQ_Ganado() {
     }
 
-    public VQ_Ganado(int idVaca, String fechaEntrada, String fechaSacrificio, String nombre, VQ_Naves idVQNaves, VQ_Ganado madre, List<VQ_Produccion> listaProducciones) {
-        this.idVaca = idVaca;
+    public VQ_Ganado(int ID, String fechaEntrada, String fechaSacrificio, String nombre, int idnave, int idmadre, List<VQ_Produccion> listaProducciones) {
+        this.ID = ID;
         this.fechaEntrada = fechaEntrada;
         this.fechaSacrificio = fechaSacrificio;
         this.nombre = nombre;
-        this.VQNaves = idVQNaves;
-        this.madre = madre;
+
+        this.nave = new VQ_Naves();
+        this.nave.setIdNave(idnave);
+        if(idmadre >0){
+            this.id_madre = new VQ_Ganado();
+            this.id_madre.setID(idmadre);
+        }
+        else{
+            this.id_madre = null;
+        }
         this.listaProducciones = listaProducciones;
+
     }
 
-    public VQ_Ganado(String fechaEntrada, String fechaSacrificio, String nombre, VQ_Naves idVQNaves, VQ_Ganado madre, List<VQ_Produccion> listaProducciones) {
+    public VQ_Ganado(String fechaEntrada, String fechaSacrificio, String nombre, int idnave, int idmadre, List<VQ_Produccion> listaProducciones) {
         this.fechaEntrada = fechaEntrada;
         this.fechaSacrificio = fechaSacrificio;
         this.nombre = nombre;
-        this.VQNaves = idVQNaves;
-        this.madre = madre;
+        if(idmadre >0){
+            this.id_madre = new VQ_Ganado();
+            this.id_madre.setID(idmadre);
+        }
+        else{
+            this.id_madre = null;
+        }
+        this.nave = new VQ_Naves();
+        this.nave.setIdNave(idnave);
+        this.id_madre = new VQ_Ganado();
+        this.id_madre.setID(idmadre);
+
         this.listaProducciones = listaProducciones;
+
+
+    }
+    public VQ_Ganado(String fechaEntrada, String fechaSacrificio, String nombre, int idnave, int idmadre) {
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSacrificio = fechaSacrificio;
+        this.nombre = nombre;
+        if(idmadre >0){
+            this.id_madre = new VQ_Ganado();
+            this.id_madre.setID(idmadre);
+        }
+        else{
+            this.id_madre = null;
+        }
+        this.nave = new VQ_Naves();
+        this.nave.setIdNave(idnave);
+        this.id_madre = new VQ_Ganado();
+        this.id_madre.setID(idmadre);
+
+        this.listaProducciones = new ArrayList<VQ_Produccion>();
     }
 
-    public int getIdVaca() {
-        return idVaca;
+    public int getID() {
+        return ID;
     }
 
-    public void setIdVaca(int idVaca) {
-        this.idVaca = idVaca;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getFechaEntrada() {
@@ -93,7 +180,7 @@ public class VQ_Ganado implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+/*
     public VQ_Naves getIdNave() {
         return VQNaves;
     }
@@ -116,6 +203,18 @@ public class VQ_Ganado implements Serializable {
     public void setListaProducciones (List<VQ_Produccion> listaProducciones){
         this.listaProducciones = listaProducciones;
     }
+*/
 
 
+    @Override
+    public String toString() {
+        return "VQ_Ganado{" +
+                "idVaca=" + ID +
+                ", fechaEntrada='" + fechaEntrada + '\'' +
+                ", fechaSacrificio='" + fechaSacrificio + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", id_nave=" + getNave().getIdNave() +
+                ", id_madre=" + id_madre +
+                '}';
+    }
 }

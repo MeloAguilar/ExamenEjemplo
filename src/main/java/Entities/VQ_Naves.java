@@ -13,8 +13,9 @@ public class VQ_Naves implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int idNave;
+
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idVaca")
+    @JoinColumn(name = "ID")
     private List<VQ_Ganado> listaVQGanados;
     @Column(name = "ganadero")
     private String ganadero;
@@ -60,6 +61,8 @@ public class VQ_Naves implements Serializable {
         return listaVQGanados;
     }
 
+
+
     public String getGanadero() {
         return ganadero;
     }
@@ -79,6 +82,6 @@ public class VQ_Naves implements Serializable {
     //toString
     @Override
     public String toString() {
-        return String.format("ID nave: %d, Ganadero: %s, Ubicación %s" + System.lineSeparator() + "Vacas: %s", idNave, ganadero, ubicacion, listaVQGanados);
+        return String.format("ID nave: %d, Ganadero: %s, Ubicación %s", idNave, ganadero, ubicacion);
     }
 }
